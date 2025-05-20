@@ -1,0 +1,83 @@
+<?php
+// agregar_carrito.php - Añadir producto al carrito
+require_once 'db_config.php';
+session_start();
+if (!isset($_SESSION['id_usuario'])) {
+    header('Location: login.php');
+    exit;
+}
+$id_usuario = $_SESSION['id_usuario'];
+$id_producto = intval($_POST['id_producto'] ?? 0);
+$cantidad = intval($_POST['cantidad'] ?? 1);
+if ($id_producto <= 0 || $cantidad <= 0) {
+    header('Location: tienda.php');
+    exit;
+}
+// Buscar carrito activo
+$sql = "SELECT id_carrito FROM carrito WHERE id_usuario = ? AND estado = 'activo' LIMIT 1";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param('i', $id_usuario);
+$stmt->execute();
+$stmt->bind_result($id_carrito);
+if (!$stmt->fetch()) {
+    $stmt->close();
+    // Crear carrito
+    $sql2 = "INSERT INTO carrito (id_usuario) VALUES (?)";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->bind_param('i', $id_usuario);
+    $stmt2->execute();
+    $id_carrito = $stmt2->insert_id;
+    $stmt2->close();
+} else {
+    $stmt->close();
+}
+// Comprobar stock
+$sql = "SELECT stock, precio FROM productos WHERE id_producto = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param('i', $id_producto);
+$stmt->execute();
+$stmt->bind_result($stock, $precio);
+if (!$stmt->fetch() || $stock < $cantidad) {
+    $stmt->close();
+    include 'header.php';
+    echo '<div class="container mt-5"><div class="alert alert-danger">No hay suficiente stock disponible.</div><a href="javascript:history.back()" class="btn btn-secondary mt-2">Volver</a></div>';
+    include 'footer.php';
+    exit;
+}
+$stmt->close();
+// ¿Ya está en el carrito?
+$sql = "SELECT id_carrito_detalle, cantidad FROM carrito_detalle WHERE id_carrito = ? AND id_producto = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param('ii', $id_carrito, $id_producto);
+$stmt->execute();
+$stmt->bind_result($id_detalle, $cant_actual);
+if ($stmt->fetch()) {
+    $stmt->close();
+    $nueva_cant = $cant_actual + $cantidad;
+    if ($nueva_cant > $stock) $nueva_cant = $stock;
+    $sql2 = "UPDATE carrito_detalle SET cantidad = ? WHERE id_carrito_detalle = ?";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->bind_param('ii', $nueva_cant, $id_detalle);
+    $stmt2->execute();
+    $stmt2->close();
+} else {
+    $stmt->close();
+    $sql2 = "INSERT INTO carrito_detalle (id_carrito, id_producto, cantidad, precio_unitario) VALUES (?, ?, ?, ?)";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->bind_param('iiid', $id_carrito, $id_producto, $cantidad, $precio);
+    $stmt2->execute();
+    $stmt2->close();
+}
+// Mostrar mensaje de éxito y dejar al usuario en la misma página
+include 'header.php';
+echo '<div class="container mt-5 mb-5" style="max-width:500px;">';
+echo '<div class="alert alert-success text-center" style="font-size:1.15rem;">';
+echo '<span style="font-size:2rem;vertical-align:middle;">✅</span><br>¡El producto se ha añadido a tu carrito!';
+echo '<div class="mt-3">';
+echo '<a href="carrito.php" class="btn btn-warning me-2">Ir al carrito</a>';
+echo '<a href="javascript:history.back()" class="btn btn-outline-secondary">Seguir comprando</a>';
+echo '</div>';
+echo '</div>';
+echo '</div>';
+include 'footer.php';
+exit;
