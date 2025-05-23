@@ -5,13 +5,13 @@ Desarrollada e implementada en **XAMPP** con PHP, MySQL, HTML y CSS.
 
 ---
 
-## 📋 Descripción
+## Descripción
 
 Patitas.sytes.net es una plataforma de comercio electrónico para la venta de alimentos, juguetes, accesorios e higiene para mascotas (perros, gatos y otras especies). Ofrece a los usuarios registro, gestión de perfil, carrito de compra, pasarela de pago, historial de pedidos y exportación del catálogo en XML. Diseñada para ser accesible, intuitiva y escalable, facilita la digitalización de pequeños negocios.
 
 ---
 
-## ⚙️ Prerrequisitos
+## Prerrequisitos
 
 - **XAMPP** (Apache + MySQL + PHP) instalado en tu sistema  
 - Navegador web moderno (Chrome, Firefox, Edge, etc.)  
@@ -19,7 +19,7 @@ Patitas.sytes.net es una plataforma de comercio electrónico para la venta de al
 
 ---
 
-## 🛠 Instalación
+## Instalación
 
 1. **Descarga el proyecto**  
    Clona o copia la carpeta `patitas.sytes.net` dentro de la carpeta `htdocs` de tu instalación XAMPP (por ejemplo, `C:\xampp\htdocs\patitas.sytes.net`).
@@ -52,7 +52,7 @@ Patitas.sytes.net es una plataforma de comercio electrónico para la venta de al
 
 ---
 
-## 🗄️ Base de datos
+## Base de datos
 
 - **Usuarios**: datos y credenciales de usuarios.  
 - **Categorías**: (Perros, Gatos, Otras, Higiene).  
@@ -64,7 +64,7 @@ Patitas.sytes.net es una plataforma de comercio electrónico para la venta de al
 
 ---
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
 - **Registro / Login**  
 - **Gestión de perfil** (datos, cambio de contraseña)  
@@ -77,7 +77,7 @@ Patitas.sytes.net es una plataforma de comercio electrónico para la venta de al
 
 ---
 
-## 💻 Tecnologías
+## Tecnologías
 
 - **PHP 7+**  
 - **MySQL**  
@@ -86,7 +86,7 @@ Patitas.sytes.net es una plataforma de comercio electrónico para la venta de al
 
 ---
 
-## ⚡ Mejoras futuras
+## Mejoras futuras
 
 - Integración SEO  
 - Marketing por correo electrónico  
@@ -96,7 +96,7 @@ Patitas.sytes.net es una plataforma de comercio electrónico para la venta de al
 
 ---
 
-## 📝 Licencia
+## Licencia
 
 Proyecto académico desarrollado como entrega de la asignatura “Lenguajes de marcas y sistemas de gestión de la información”.  
 Uso libre para fines educativos.
